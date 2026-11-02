@@ -1,4 +1,3 @@
-
 openai
 langgraph
 langchain
@@ -11,3 +10,4 @@ pydantic
 pytest
 psycopg[binary]
 pgvector
+pypdf
