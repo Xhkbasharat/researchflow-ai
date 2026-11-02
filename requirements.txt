@@ -9,3 +9,5 @@ fastapi
 uvicorn
 pydantic
 pytest
+psycopg[binary]
+pgvector
