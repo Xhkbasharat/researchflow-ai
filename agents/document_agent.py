@@ -1,49 +1,72 @@
-
 from openai import OpenAI
+
+from rag.chunker import chunk_text
+from rag.retriever import retrieve_relevant_chunks
 
 client = OpenAI()
 
 
-def analyze_document(document_data: dict) -> str:
+def answer_from_document(
+    document_data: dict,
+    question: str,
+    top_k: int = 5
+) -> dict:
     """
-    Analyze extracted PDF document content.
+    Answer questions using relevant PDF document content.
     """
 
-    if not document_data.get("text"):
+    if not question.strip():
+        raise ValueError("Question cannot be empty.")
+
+    document_text = document_data.get("text", "")
+
+    if not document_text.strip():
         raise ValueError("Document contains no extractable text.")
 
-    document_text = document_data["text"]
+    # Step 1: Divide document into chunks
+    chunks = chunk_text(
+        document_text,
+        chunk_size=1000,
+        overlap=200
+    )
 
-    # Keep the initial implementation within a manageable
-    # context size. We'll add chunking and RAG later.
-    document_text = document_text[:30000]
+    # Step 2: Retrieve relevant chunks
+    relevant_chunks = retrieve_relevant_chunks(
+        query=question,
+        chunks=chunks,
+        top_k=top_k
+    )
 
+    # Step 3: Prepare evidence
+    evidence = "\n\n".join(
+        f"""
+        Chunk {chunk['chunk_id']}
+        Relevance: {chunk['similarity_score']:.3f}
+        Content: {chunk['content']}
+        """
+        for chunk in relevant_chunks
+    )
+
+    # Step 4: Generate an evidence-based answer
     prompt = f"""
-    You are an AI Document Research Agent.
+    You are an AI Document Research Assistant.
 
     DOCUMENT:
-    {document_data.get("filename", "Unknown document")}
+    {document_data.get('filename', 'Unknown')}
 
-    TOTAL PAGES:
-    {document_data.get("total_pages", 0)}
+    USER QUESTION:
+    {question}
 
-    EXTRACTED CONTENT:
-    {document_text}
+    RETRIEVED DOCUMENT EVIDENCE:
+    {evidence}
 
-    YOUR TASKS:
-
-    1. Summarize the document.
-    2. Identify its main topics.
-    3. Extract important findings.
-    4. Identify useful statistics and data.
-    5. Identify limitations and research gaps.
-    6. Mention relevant page numbers when available.
-
-    RULES:
-    - Use only the supplied document content.
-    - Do not invent facts or statistics.
-    - Preserve important numerical information.
-    - Mention if the document lacks sufficient evidence.
+    INSTRUCTIONS:
+    1. Answer using the retrieved evidence.
+    2. Explain important findings.
+    3. Mention relevant chunk numbers.
+    4. Identify missing information.
+    5. Never invent facts.
+    6. If evidence is insufficient, say so.
     """
 
     response = client.responses.create(
@@ -51,5 +74,9 @@ def analyze_document(document_data: dict) -> str:
         input=prompt
     )
 
-    return response.output_text
-  
+    return {
+        "question": question,
+        "answer": response.output_text,
+        "retrieved_chunks": relevant_chunks
+    }
+    
