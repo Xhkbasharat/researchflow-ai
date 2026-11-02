@@ -1,14 +1,14 @@
-ResearchFlow AI 🚀
+ResearchFlow AI 
 
 Advanced Agentic AI – Multi-Agent Research & Reporting System
 
 ResearchFlow AI is an advanced Agentic AI platform designed to automate complex research workflows through intelligent multi-agent collaboration. It uses specialized AI agents to plan research tasks, collect information, analyze evidence, generate structured reports, and verify factual claims.
 
-🎯 Project Vision
+Project Vision
 
 Build an intelligent AI research assistant capable of coordinating multiple specialized agents to produce reliable, evidence-based research reports.
 
-🤖 AI Agents
+AI Agents
 
 - Supervisor Agent: Coordinates agents and manages workflow execution.
 - Planner Agent: Breaks complex research questions into tasks.
@@ -20,7 +20,7 @@ Build an intelligent AI research assistant capable of coordinating multiple spec
 - Critic Agent: Reviews report quality and recommends improvements.
 - Memory Agent: Manages reusable research context.
 
-⚙️ Planned Features
+Planned Features
 
 - Multi-agent orchestration with LangGraph
 - Autonomous research planning
@@ -33,7 +33,7 @@ Build an intelligent AI research assistant capable of coordinating multiple spec
 - Research history and memory
 - AI evaluation and monitoring
 
-🛠️ Technology Stack
+Technology Stack
 
 - Python
 - OpenAI API
@@ -46,11 +46,11 @@ Build an intelligent AI research assistant capable of coordinating multiple spec
 - Docker
 - LangSmith
 
-🏗️ Project Architecture
+Project Architecture
 
 User Query → Planner → Supervisor → Research Agents → Analysis → Report Generation → Fact Checking → Quality Review → Final Report
 
-📁 Project Structure
+Project Structure
 
 researchflow-ai/
 ├── agents/
@@ -67,26 +67,3 @@ researchflow-ai/
 ├── .env.example
 ├── .gitignore
 └── README.md
-
-🚀 Development Roadmap
-
-- [x] Initial multi-agent architecture
-- [x] Research Agent prototype
-- [x] Analyst Agent prototype
-- [x] Writer Agent prototype
-- [x] Fact-Checker Agent prototype
-- [ ] Advanced Supervisor and Planner
-- [ ] Web search integration
-- [ ] RAG implementation
-- [ ] Database and persistent memory
-- [ ] FastAPI backend
-- [ ] React frontend
-- [ ] Evaluation and deployment
-
-🔐 Security
-
-API keys and sensitive configuration must be stored in environment variables. Never commit real API keys or secrets to GitHub.
-
-👨‍💻 Author
-
-Developed as an Agentic AI engineering portfolio project to explore autonomous agents, LLM applications, and intelligent workflow automation.
